@@ -1,0 +1,33 @@
+# === Node / NestJS ===
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# === Entorno (NUNCA subir) ===
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+
+# === Logs ===
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === Sistema operativo ===
+.DS_Store
+Thumbs.db
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Legacy / respaldos locales (no versionar) ===
+**/src-_legacy-express/
+**/docs-parqueoagil/
+**/evidencias-parqueoagil/

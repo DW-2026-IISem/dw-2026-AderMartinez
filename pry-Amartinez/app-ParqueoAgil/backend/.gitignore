@@ -1,0 +1,17 @@
+# dependencias y build
+node_modules/
+dist/
+
+# entorno local
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+*.tsbuildinfo
+
+# legacy / respaldos locales (no versionar)
+src-_legacy-express/
+docs-parqueoagil/
