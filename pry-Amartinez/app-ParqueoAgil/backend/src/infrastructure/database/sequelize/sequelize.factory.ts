@@ -2,9 +2,11 @@ import { Sequelize } from 'sequelize-typescript';
 import { getDbBlock } from '../../../config/environment/db-env.js';
 import { IEnvConfig } from '../../../config/environment/env.interface.js';
 import { ClientModel } from '../../../features/business/clients/infrastructure/persistence/models/client.model.js';
+import { VehicleTypeModel } from '../../../features/business/vehicle-types/infrastructure/persistence/models/vehicle-type.model.js';
 
 export const ALL_MODELS: any[] = [
   ClientModel,
+  VehicleTypeModel,
 ];
 
 export function sequelizeFactory(cfg: IEnvConfig): Sequelize {
