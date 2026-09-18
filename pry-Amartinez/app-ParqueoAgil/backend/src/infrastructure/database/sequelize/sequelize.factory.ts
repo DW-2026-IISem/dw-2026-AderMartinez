@@ -4,11 +4,13 @@ import { IEnvConfig } from '../../../config/environment/env.interface.js';
 import { ClientModel } from '../../../features/business/clients/infrastructure/persistence/models/client.model.js';
 import { VehicleTypeModel } from '../../../features/business/vehicle-types/infrastructure/persistence/models/vehicle-type.model.js';
 import { ParkingZoneModel } from '../../../features/business/parking-zones/infrastructure/persistence/models/parking-zone.model.js';
+import { TicketModel } from '../../../features/business/tickets/infrastructure/persistence/models/ticket.model.js';
 
 export const ALL_MODELS: any[] = [
   ClientModel,
   VehicleTypeModel,
   ParkingZoneModel,
+  TicketModel,
 ];
 
 export function sequelizeFactory(cfg: IEnvConfig): Sequelize {
