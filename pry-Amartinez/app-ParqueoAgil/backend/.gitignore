@@ -15,3 +15,6 @@ npm-debug.log*
 # legacy / respaldos locales (no versionar)
 src-_legacy-express/
 docs-parqueoagil/
+
+# tests temporalmente deshabilitados
+_disabled-tests/
