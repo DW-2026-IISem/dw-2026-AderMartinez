@@ -1,0 +1,16 @@
+@layer theme, base, primeng, utilities;
+
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+
+/* Ajustes base para ParqueoÁgil */
+body {
+  @apply bg-slate-100 text-slate-800;
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Hacer que los inputs de PrimeNG ocupen el 100% del ancho */
+.p-inputtext {
+  width: 100%;
+}
