@@ -1,0 +1,57 @@
+<app-page-header title="Clientes" subtitle="Gestión de los dueños de los vehículos.">
+  <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+    + Nuevo Cliente
+  </button>
+</app-page-header>
+
+@if (errorMessage()) {
+  <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+    <i class="pi pi-exclamation-triangle mr-2"></i> {{ errorMessage() }}
+  </div>
+}
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  @if (isLoading()) {
+    <div class="text-center py-10 text-gray-500">
+      <i class="pi pi-spin pi-spinner text-4xl mb-4 text-blue-500"></i>
+      <p>Cargando clientes...</p>
+    </div>
+  } @else {
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-sm">
+          <th class="p-4 font-semibold">ID</th>
+          <th class="p-4 font-semibold">Nombre</th>
+          <th class="p-4 font-semibold">Email</th>
+          <th class="p-4 font-semibold">Teléfono</th>
+          <th class="p-4 font-semibold">Estado</th>
+          <th class="p-4 font-semibold text-right">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        @for (client of clients(); track client.id) {
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="p-4 text-gray-500">#{{ client.id }}</td>
+            <td class="p-4 font-medium text-gray-800">{{ client.name }}</td>
+            <td class="p-4 text-gray-600">{{ client.email || 'N/A' }}</td>
+            <td class="p-4 text-gray-600">{{ client.phone || 'N/A' }}</td>
+            <td class="p-4">
+              <!-- AQUÍ USAMOS EL COMPONENTE COMPARTIDO -->
+              <app-status-tag [status]="client.status" />
+            </td>
+            <td class="p-4 text-right">
+              <button class="text-blue-600 hover:text-blue-800 font-medium text-sm mr-3">Editar</button>
+              <button class="text-red-500 hover:text-red-700 font-medium text-sm">Eliminar</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="p-8 text-center text-gray-500">
+              No hay clientes registrados.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
