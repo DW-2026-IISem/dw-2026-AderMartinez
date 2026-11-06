@@ -7,4 +7,5 @@ export interface ITicketRepository {
   closeTicket(id: number, exitAt: Date): Promise<Ticket>;
   findById(id: number): Promise<Ticket | null>;
   findOpenByZone(parkingZoneId: number): Promise<Ticket[]>;
+  findAll(page: number, limit: number): Promise<{ items: Ticket[]; total: number }>;
 }
