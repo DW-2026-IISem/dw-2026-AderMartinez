@@ -5,6 +5,7 @@ import {
   HttpCode,
   Param,
   ParseIntPipe,
+  Patch, // <-- Agregado
   Post,
   Query,
   UseGuards,
@@ -19,12 +20,9 @@ import { VehicleTypeMapper } from '../../../application/mappers/vehicle-type.map
 import { CreateVehicleTypeUseCase } from '../../../application/use-cases/create-vehicle-type.use-case.js';
 import { GetVehicleTypeByIdUseCase } from '../../../application/use-cases/get-vehicle-type-by-id.use-case.js';
 import { ListVehicleTypesUseCase } from '../../../application/use-cases/list-vehicle-types.use-case.js';
+// IMPORTANTE: Importamos el nuevo caso de uso
+import { DeactivateVehicleTypeUseCase } from '../../../application/use-cases/deactivate-vehicle-type.use-case.js';
 
-/**
- * Controller del feature VehicleTypes.
- *
- * **Modalidad 3 — JWT + RBAC**.
- */
 @ApiTags('vehicle-types')
 @UseGuards(JwtAuthGuard, PermissionsGuard)
 @Controller('vehicle-types')
@@ -33,6 +31,7 @@ export class VehicleTypesController {
     private readonly createVehicleType: CreateVehicleTypeUseCase,
     private readonly listVehicleTypes: ListVehicleTypesUseCase,
     private readonly getVehicleType: GetVehicleTypeByIdUseCase,
+    private readonly deactivateVehicleType: DeactivateVehicleTypeUseCase, // <-- Inyectado
   ) {}
 
   @Post()
@@ -54,5 +53,13 @@ export class VehicleTypesController {
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const vt = await this.getVehicleType.execute(id);
     return VehicleTypeMapper.toResponse(vt);
+  }
+
+  // ENDPOINT NUEVO: Baja lógica
+  @Patch(':id/deactivate')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Desactivar tipo de vehículo (baja lógica)' })
+  async deactivate(@Param('id', ParseIntPipe) id: number) {
+    return this.deactivateVehicleType.execute(id);
   }
 }

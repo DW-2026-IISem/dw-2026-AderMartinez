@@ -6,6 +6,7 @@ import { VEHICLE_TYPE_REPOSITORY } from './domain/interfaces/vehicle-type.reposi
 import { VehicleTypeRepository } from './infrastructure/persistence/repositories/vehicle-type.repository.js';
 import { VehicleTypeSeeder } from './infrastructure/persistence/seeders/vehicle-type.seeder.js';
 import { VehicleTypesController } from './presentation/http/controllers/vehicle-types.controller.js';
+import { DeactivateVehicleTypeUseCase } from './application/use-cases/deactivate-vehicle-type.use-case.js';
 
 @Module({
   controllers: [VehicleTypesController],
@@ -14,6 +15,7 @@ import { VehicleTypesController } from './presentation/http/controllers/vehicle-
     ListVehicleTypesUseCase,
     GetVehicleTypeByIdUseCase,
     VehicleTypeSeeder,
+    DeactivateVehicleTypeUseCase,
     { provide: VEHICLE_TYPE_REPOSITORY, useClass: VehicleTypeRepository },
   ],
   exports: [VEHICLE_TYPE_REPOSITORY, VehicleTypeSeeder],

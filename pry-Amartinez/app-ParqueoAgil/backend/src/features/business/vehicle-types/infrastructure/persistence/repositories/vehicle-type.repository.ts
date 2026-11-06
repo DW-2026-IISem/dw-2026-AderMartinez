@@ -47,6 +47,16 @@ export class VehicleTypeRepository implements IVehicleTypeRepository {
     return this.repo.count();
   }
 
+  // AQUÍ ESTÁ EL MÉTODO UPDATE BIEN UBICADO
+  async update(id: number, data: Partial<VehicleType>): Promise<VehicleType | null> {
+    const found = await this.repo.findByPk(id);
+    if (!found) {
+      return null;
+    }
+    await found.update(data);
+    return this.toDomain(found);
+  }
+
   private toDomain(m: VehicleTypeModel): VehicleType {
     return new VehicleType({
       id: m.id,

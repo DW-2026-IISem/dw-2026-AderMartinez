@@ -8,4 +8,5 @@ export interface IVehicleTypeRepository {
   findById(id: number): Promise<VehicleType | null>;
   findByName(name: string): Promise<VehicleType | null>;
   count(): Promise<number>;
+  update(id: number, data: Partial<VehicleType>): Promise<VehicleType | null>;
 }
