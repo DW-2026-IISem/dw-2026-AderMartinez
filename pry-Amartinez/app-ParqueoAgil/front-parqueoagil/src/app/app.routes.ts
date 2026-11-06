@@ -28,8 +28,24 @@ export const routes: Routes = [
       },
       {
         path: 'clientes',
-        // Carga diferida del componente de la tabla de clientes
         loadComponent: () => import('./features/clients/clients-list/clients-list').then(m => m.ClientsList)
+      },
+      {
+        path: 'drivers',
+        loadComponent: () => import('./features/drivers/drivers-list/drivers-list').then(m => m.DriversList)
+      },
+      // NUEVA RUTA: Tipos de Vehículo
+      {
+        path: 'vehicle-types',
+        loadComponent: () => import('./features/vehicle-types/vehicle-type-list/vehicle-type-list').then(m => m.VehicleTypeList)
+      },
+      {
+        path: 'parking-zones',
+        loadComponent: () => import('./features/parking-zones/parking-zone-list/parking-zone-list').then(m => m.ParkingZoneList)
+      },
+      {
+        path: 'tickets',
+        loadComponent: () => import('./features/tickets/ticket-list/ticket-list').then(m => m.TicketList)
       }
     ]
   },

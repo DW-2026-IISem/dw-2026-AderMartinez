@@ -13,7 +13,6 @@ import { AuthService } from '../../core/services/auth.service';
 export class Shell {
   public authService = inject(AuthService);
 
-  // Menú de navegación
   public nav = () => [
     { 
       path: '/', 
@@ -29,17 +28,31 @@ export class Shell {
       path: '/tickets', 
       label: 'Tickets', 
       icon: 'M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z' 
-    }
+    },
+    { 
+      path: '/drivers', 
+      label: 'Conductores', 
+      icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' 
+    },
+    {
+      path: '/vehicle-types',
+      label: 'Tipos de Vehículo',
+      icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4'
+    },
+    {
+      path: '/parking-zones',
+      label: 'Zonas de Parqueo',
+      icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'
+    },
+    {
+      path: '/tickets',
+      label: 'Tickets',
+      icon: 'M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z'
+    },
   ];
 
-  // Simulamos el estado de conexión
-  public live = {
-    status: () => 'live'
-  };
-
-  public statusLabel = () => {
-    return this.live.status() === 'live' ? 'Servidor en línea' : 'Sin conexión';
-  };
+  public live = { status: () => 'live' };
+  public statusLabel = () => this.live.status() === 'live' ? 'Servidor en línea' : 'Sin conexión';
 
   public logout() {
     this.authService.logout();
