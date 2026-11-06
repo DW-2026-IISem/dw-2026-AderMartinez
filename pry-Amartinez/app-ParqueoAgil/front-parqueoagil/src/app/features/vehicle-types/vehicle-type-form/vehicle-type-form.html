@@ -1,0 +1,41 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4 pt-4">
+  
+  <div>
+    <label class="mb-1 block text-sm font-medium text-slate-700">Nombre *</label>
+    <input type="text" formControlName="name" placeholder="Ej. Camioneta, Motocicleta..." 
+           class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+    @if (form.controls.name.touched && form.controls.name.invalid) {
+      <p class="text-red-500 text-xs mt-1">El nombre es obligatorio.</p>
+    }
+  </div>
+
+  <div>
+    <label class="mb-1 block text-sm font-medium text-slate-700">Descripción</label>
+    <textarea formControlName="description" rows="3" placeholder="Descripción del tipo de vehículo..." 
+              class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"></textarea>
+  </div>
+  <div>
+    <label class="mb-1 block text-sm font-medium text-slate-700">Tarifa por hora *</label>
+    <input type="number" formControlName="hourlyRate" placeholder="Ej. 5000" min="1"
+           class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+    @if (form.controls.hourlyRate.touched && form.controls.hourlyRate.invalid) {
+      <p class="text-red-500 text-xs mt-1">La tarifa debe ser un número positivo.</p>
+    }
+  </div>
+
+  <div class="flex justify-end gap-3 border-t border-gray-200 pt-6 mt-6">
+    <button type="button" (click)="cancelled.emit()" 
+            class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+      Cancelar
+    </button>
+    <button type="submit" [disabled]="saving()" 
+            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 flex items-center gap-2">
+      @if (saving()) {
+        <i class="pi pi-spin pi-spinner"></i> Guardando...
+      } @else {
+        Guardar
+      }
+    </button>
+  </div>
+
+</form>

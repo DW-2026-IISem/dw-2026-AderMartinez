@@ -1,0 +1,44 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4 pt-4">
+  
+  <div>
+    <label class="mb-1 block text-sm font-medium text-slate-700">Cliente *</label>
+    <select formControlName="clientId" class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white">
+      <option [ngValue]="null" disabled>Selecciona un cliente...</option>
+      @for (c of clients(); track c.id) {
+        <option [ngValue]="c.id">{{ c.name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <label class="mb-1 block text-sm font-medium text-slate-700">Zona de Parqueo *</label>
+      <select formControlName="parkingZoneId" class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white">
+        <option [ngValue]="null" disabled>Selecciona una zona...</option>
+        @for (z of zones(); track z.id) {
+          <option [ngValue]="z.id">{{ z.name }} ({{ z.capacity }} cupos)</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="mb-1 block text-sm font-medium text-slate-700">Tipo de Vehículo *</label>
+      <select formControlName="vehicleTypeId" class="w-full px-4 py-2 rounded-lg border border-gray-300 bg-white">
+        <option [ngValue]="null" disabled>Selecciona un tipo...</option>
+        @for (t of vehicleTypes(); track t.id) {
+          <option [ngValue]="t.id">{{ t.name }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-3 border-t border-gray-200 pt-6 mt-6">
+    <button type="button" (click)="cancelled.emit()" class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-medium">
+      Cancelar
+    </button>
+    <button type="submit" [disabled]="saving()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium disabled:opacity-50">
+      @if (saving()) { <i class="pi pi-spin pi-spinner mr-2"></i> Registrando... } @else { Registrar Entrada }
+    </button>
+  </div>
+
+</form>

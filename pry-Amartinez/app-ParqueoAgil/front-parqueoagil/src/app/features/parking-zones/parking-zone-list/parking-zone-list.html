@@ -1,0 +1,93 @@
+<app-page-header title="Zonas de Parqueo" subtitle="Gestión de los espacios disponibles en el parqueadero.">
+  <button (click)="openCreateModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+    + Nueva Zona
+  </button>
+</app-page-header>
+
+@if (errorMessage()) {
+<div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+  <i class="pi pi-exclamation-triangle mr-2"></i> {{ errorMessage() }}
+</div>
+}
+
+<div class="mb-4">
+  <div class="relative max-w-md">
+    <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <input type="text" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)"
+      placeholder="Buscar zona por nombre..."
+      class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500">
+  </div>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  @if (isLoading()) {
+  <div class="text-center py-10 text-gray-500">
+    <i class="pi pi-spin pi-spinner text-4xl mb-4 text-blue-500"></i>
+    <p>Cargando zonas...</p>
+  </div>
+  } @else {
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="bg-gray-50 border-b border-gray-200 text-gray-600 text-sm">
+        <th class="p-4 font-semibold">ID</th>
+        <th class="p-4 font-semibold">Nombre</th>
+        <th class="p-4 font-semibold">Capacidad</th>
+        <th class="p-4 font-semibold">Tipo de Vehículo</th>
+        <th class="p-4 font-semibold">Estado</th>
+        <th class="p-4 font-semibold text-right">Acciones</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      @for (item of visibleItems(); track item.id) {
+      <tr class="hover:bg-gray-50 transition-colors">
+        <td class="p-4 text-gray-500">#{{ item.id }}</td>
+        <td class="p-4 font-medium text-gray-800">{{ item.name }}</td>
+        <td class="p-4 text-gray-600">{{ item.capacity }} cupos</td>
+        <td class="p-4">
+          <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-bold">
+            {{ typeName()(item.vehicleTypeId) }}
+          </span>
+        </td>
+        <td class="p-4"><app-status-tag [status]="item.status" /></td>
+        <td class="p-4 text-right">
+          <button (click)="openEditModal(item)" class="text-blue-600 hover:text-blue-800 font-medium text-sm mr-3">Editar</button>
+          <button (click)="deleteItem(item)" class="text-red-500 hover:text-red-700 font-medium text-sm">Eliminar</button>
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="6" class="p-8 text-center text-gray-500">No se encontraron zonas de parqueo.</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+</div>
+
+@if (isModalOpen()) {
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden">
+    <div class="flex justify-between items-center p-6 border-b border-gray-200">
+      <h3 class="text-xl font-bold text-gray-800">
+        {{ itemToEdit() ? 'Editar Zona' : 'Nueva Zona' }}
+      </h3>
+      <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600">
+        <i class="pi pi-times text-xl"></i>
+      </button>
+    </div>
+    <div class="p-6">
+      <!-- Etiqueta limpia sin comentarios dentro -->
+      <app-parking-zone-form 
+        [parkingZone]="itemToEdit()" 
+        [vehicleTypes]="vehicleTypes()"
+        [resetKey]="resetKey()" 
+        [saving]="false" 
+        (saved)="save($event)" 
+        (cancelled)="closeModal()" />
+    </div>
+  </div>
+</div>
+}
+
+<p-toast position="top-right" />
+<p-confirmdialog />

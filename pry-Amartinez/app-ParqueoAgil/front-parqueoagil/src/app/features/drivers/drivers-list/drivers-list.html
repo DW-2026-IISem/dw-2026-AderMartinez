@@ -1,0 +1,104 @@
+<header class="page-head">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Conductores</h1>
+    <p class="text-gray-500 mt-1">Personas registradas en la app, sus vehículos y si están dentro del parqueadero.</p>
+  </div>
+  <button type="button" class="bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50" 
+          (click)="load(meta()?.page ?? 1)" [disabled]="busy()">
+    Actualizar
+  </button>
+</header>
+
+@if (error()) {
+  <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6 flex justify-between items-center" role="alert">
+    <span>{{ error() }}</span>
+    <button type="button" class="bg-white px-3 py-1 rounded border border-red-200 text-sm" (click)="load(meta()?.page ?? 1)">Reintentar</button>
+  </div>
+}
+
+@if (loading()) {
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    @for (i of [1, 2, 3, 4, 5]; track i) {
+      <div class="h-10 bg-gray-100 rounded animate-pulse w-full"></div>
+    }
+  </div>
+} @else if (result(); as r) {
+  <section class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden" aria-labelledby="drivers-title">
+    <header class="p-6 border-b border-gray-200 flex justify-between items-center">
+      <h2 id="drivers-title" class="text-lg font-bold text-gray-800">Conductores registrados</h2>
+      <span class="text-sm text-gray-500">{{ r.meta.total }} en total</span>
+    </header>
+
+    @if (r.items.length === 0) {
+      <div class="p-12 text-center text-gray-500">
+        <p class="font-bold text-lg mb-2">Todavía no hay conductores.</p>
+        <p>Los conductores se registran solos desde la app móvil; aparecerán aquí en cuanto creen su cuenta.</p>
+      </div>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-50 text-gray-600 text-sm border-b border-gray-200">
+              <th class="p-4 font-semibold">Nombre</th>
+              <th class="p-4 font-semibold">Correo</th>
+              <th class="p-4 font-semibold">Celular</th>
+              <th class="p-4 font-semibold">Documento</th>
+              <th class="p-4 font-semibold">Vehículos</th>
+              <th class="p-4 font-semibold">Pago preferido</th>
+              <th class="p-4 font-semibold">Estado</th>
+              <th class="p-4 font-semibold">Registro</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            @for (d of r.items; track d.id) {
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="p-4 font-medium text-gray-800">{{ d.name }}</td>
+                <td class="p-4 text-gray-600">{{ d.email ?? '—' }}</td>
+                <td class="p-4 text-gray-600">{{ d.phone ?? '—' }}</td>
+                <td class="p-4 text-gray-600"><span class="text-xs text-gray-400">{{ d.docType }}</span> {{ d.docNumber }}</td>
+                <td class="p-4">
+                  <ul class="space-y-1">
+                    @for (v of d.vehicles; track v.id) {
+                      <li><span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-xs font-bold">{{ v.plate }}</span> <span class="text-xs text-gray-500">{{ kindLabels[v.kind] }}</span></li>
+                    } @empty {
+                      <li class="text-xs text-gray-400">Sin vehículos</li>
+                    }
+                  </ul>
+                </td>
+                <td class="p-4">
+                  <span class="text-sm text-gray-700">{{ paymentLabels[d.paymentMethod] }}</span>
+                  @if (d.hasCard) {
+                    <span class="ml-2 bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-bold">Tarjeta guardada</span>
+                  }
+                </td>
+                <td class="p-4">
+                  @if (d.activeTickets > 0) {
+                    <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">Dentro</span>
+                  } @else {
+                    <span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-xs font-bold">Fuera</span>
+                  }
+                </td>
+                <td class="p-4 text-sm text-gray-500">{{ d.createdAt | date:'short' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <nav class="p-4 border-t border-gray-200 flex justify-between items-center bg-gray-50" aria-label="Paginación">
+        <span class="text-sm text-gray-500">Página {{ r.meta.page }} de {{ r.meta.totalPages || 1 }}</span>
+        <div class="flex gap-2">
+          <button type="button" class="bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 disabled:opacity-50" 
+                  (click)="load(r.meta.page - 1)" [disabled]="busy() || r.meta.page <= 1">
+            Anterior
+          </button>
+          <button type="button" class="bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 disabled:opacity-50" 
+                  (click)="load(r.meta.page + 1)" [disabled]="busy() || r.meta.page >= r.meta.totalPages">
+            Siguiente
+          </button>
+        </div>
+      </nav>
+    }
+  </section>
+}
