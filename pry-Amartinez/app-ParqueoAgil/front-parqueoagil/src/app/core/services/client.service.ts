@@ -44,4 +44,41 @@ export class ClientService {
   delete(id: number): Observable<unknown> {
     return this.http.delete(`${this.base}/${id}`);
   }
+    
+  // Simulamos el endpoint de conductores (que en el futuro unirá clients + tickets)
+  getDrivers(page: number, limit: number): Observable<any> {
+    return this.http.get<{ data: { clients: any[] } }>(this.base).pipe(
+      map(res => {
+        // Transformamos los clientes en "conductores" para que coincida con el diseño
+        const drivers = res.data.clients.map((c: any, index: number) => ({
+          id: c.id,
+          name: c.name,
+          email: c.email,
+          phone: c.phone,
+          docType: 'CC',
+          docNumber: `10${c.id}45678`,
+          vehicles: [
+            { id: 1, plate: `ABC-${c.id}00`, kind: 'car' }
+          ],
+          paymentMethod: 'cash',
+          hasCard: false,
+          activeTickets: index % 3 === 0 ? 1 : 0, // Simulamos que algunos están dentro
+          createdAt: c.createdAt || new Date().toISOString()
+        }));
+
+        // Paginación en el frontend
+        const start = (page - 1) * limit;
+        const items = drivers.slice(start, start + limit);
+
+        return {
+          items,
+          meta: {
+            page,
+            total: drivers.length,
+            totalPages: Math.ceil(drivers.length / limit)
+          }
+        };
+      })
+    );
+  }
 }
