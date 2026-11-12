@@ -32,7 +32,11 @@ La app y el panel se actualizan al instante por SSE. Si un visitante no tiene la
 
 Para leer QR en el panel hace falta una cámara o una webcam USB. Si no hay cámara, el panel permite pegar el código o registrar la placa.
 
-## Cómo correrlo
+## Probarlo rápido (Windows)
+
+Doble clic en **`INICIAR.bat`**. Descarga e instala lo que falte (Node.js y MySQL portable), crea la base, arranca el backend, el panel y la app ya compilada, y abre el navegador con los usuarios de prueba en pantalla. Para apagar todo: **`DETENER.bat`**. Paso a paso y problemas comunes en [GUIA_RAPIDA.md](GUIA_RAPIDA.md).
+
+## Cómo correrlo a mano
 
 Seguir el orden. El backend crea las tablas y carga los datos de ejemplo al arrancar.
 
